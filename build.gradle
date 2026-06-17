@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository' }
+    maven { url 'https://www.jitpack.io' }
+}
+
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    def mindustryVersion = 'v158.1'
+    compileOnly("com.github.Anuken.Mindustry:core:$mindustryVersion") {
+        exclude group: 'com.github.Anuken.Arc'
+    }
+    compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
