@@ -41,7 +41,7 @@ public class ClientMenuManager {
                 String label = target.name != null ? target.name : (target.ip != null ? target.ip : "Unknown");
                 player.sendMessage("[green]Successful unbanned: " + label);
             } else {
-                player.sendMessage("[red]Error unbanned: ).");
+                player.sendMessage("[red]Error unbanned.");
             }
         });
     }
@@ -82,7 +82,7 @@ public class ClientMenuManager {
             buttons[i][0] = typePrefix + targetName + reason;
         }
         unbanSessions.put(p, entries);
-        Call.menu(p.con, UnBanMenuId, "[red]Manage bans", "Shoose a player:", buttons);
+        Call.menu(p.con, UnBanMenuId, "[red]Manage bans", "Choose a player:", buttons);
     }
     private static Seq<Player> getOthers(Player p){
         Seq<Player> players = new Seq<>();

@@ -18,12 +18,21 @@ public class Main extends Plugin {
         BanDB.init();
         new ClientMenuManager().Init();
         Events.on(EventType.PlayerConnect.class, event -> {
+            if (RateLimiter.ConLimited(event.player.con.address)) {
+                event.player.kick("Connection rate limited. Try again later.");
+                Log.warn("Blocked connection flood from IP: @", event.player.con.address);
+                return;
+            }
             String uuid = event.player.uuid();
             String ip = event.player.con.address; // Исправлено .ip() на .con.address
             String reason = BanDB.getBanReason(uuid, ip);
             if (reason != null) {
                 event.player.kick("You have been banned!\nReason: " + reason);
             }
+        });
+        Events.on(EventType.PlayerLeave.class, event -> {
+           Player player = event.player;
+           main.Cache.banSessions.remove(player);
         });
     }
 
@@ -95,6 +104,7 @@ public class Main extends Plugin {
                 }
             });
             BanDB.ban(uuid, null, reason, period, banned[0].name);
+            banned[0].kick("You have been banned!");
             Log.info("[red]Successfully banned player " + banned[0].name);
         } );
 
@@ -115,6 +125,7 @@ public class Main extends Plugin {
                 }
             });
             BanDB.ban(ip, null, reason, period, banned[0].name);
+            banned[0].kick("You have been banned by ip!");
             Log.info("[red]Successfully banned player " + banned[0].name + "by ip: " + ip);
         });
 
