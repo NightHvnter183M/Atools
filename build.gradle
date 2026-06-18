@@ -1,8 +1,10 @@
 plugins {
     id 'java'
+    id 'com.gradleup.shadow' version '8.3.5'
 }
 
-group = 'org.example'
+
+group = 'main'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -21,7 +23,16 @@ dependencies {
         exclude group: 'com.github.Anuken.Arc'
     }
     compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+    implementation "org.xerial:sqlite-jdbc:3.46.0.0"
 
+}
+
+shadowJar {
+    archiveClassifier.set('')
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    exclude "META-INF/*.SF"
+    exclude "META-INF/*.DSA"
+    exclude "META-INF/*.RSA"
 }
 
 tasks.named('test') {
